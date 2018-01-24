@@ -1,0 +1,19 @@
+{
+    "name": "devgeniem/acf-required-tabs",
+    "description": "An Advanced Custom Fields plugin that adds an indicator for tabs that contain unfilled required fields.",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Miika Arponen",
+            "email": "miika@geniem.com",
+            "homepage": "http://geniem.com/",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "wordpress", "acf"
+    ],
+    "type": "wordpress-plugin",
+    "minimum-stability": "dev",
+    "require": {}
+}
