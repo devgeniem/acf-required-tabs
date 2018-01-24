@@ -4,8 +4,8 @@
 
 - Contributors: [devgeniem](https://github.com/devgeniem) / [Nomafin](https://github.com/Nomafin)
 - Tags: wordpress, acf
-- License: GPLv2 or later
-- License URI: http://www.gnu.org/licenses/gpl-2.0.html
+- License: GPL-3.0
+- License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 ## Description
 
