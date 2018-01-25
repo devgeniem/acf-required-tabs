@@ -266,7 +266,7 @@
 
 	            // Trigger the validation.
 	            window.checkFieldsTriggered = true;
-	            acf.validation.fetch($('form'));
+	            acf.validation.fetch(jQuery('form'));
 	        }
 	    }]);
 	    return RequiredTabs;
