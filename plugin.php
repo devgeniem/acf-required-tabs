@@ -3,9 +3,13 @@
  * Plugin Name: ACF Required Tabs
  * Plugin URI: https://github.com/devgeniem/acf-required-tabs
  * Description: An Advanced Custom Fields plugin that adds an indicator for tabs that contain unfilled required fields.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Geniem Oy / Miika Arponen
  * Author URI: http://www.geniem.com
+ */
+
+/**
+ * Class RequiredTabs
  */
 class RequiredTabs {
 
@@ -15,19 +19,26 @@ class RequiredTabs {
      * @return  void
      */
     public function __construct() {
-        // Only on the admin side
-        if ( is_admin() ) {
-            $plugin_data = get_file_data( __FILE__, [ 'Version' => 'Version' ], 'plugin' );
 
-            $version = $plugin_data['Version'];
+        add_action( 'admin_enqueue_scripts', [ __CLASS__, 'required_tabs_scripts_and_styles' ] );
+    }
 
-            // Filter dependencies in case you for example provide jQuery separately from the WordPress system
-            $dependencies = apply_filters( 'acf/required_tabs/dependencies', [ 'jquery' ] );
+    /**
+     * Required tabs scripts and styles.
+     *
+     * @return void
+     */
+    public static function required_tabs_scripts_and_styles() {
 
-            wp_enqueue_script( 'acf_required_tabs', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'assets/dist/main.js', $dependencies, $version, false );
+        // Get plugin data for scripts and styles versions.
+        $plugin_data = get_plugin_data( __FILE__ );
+        $version     = $plugin_data['Version'];
 
-            wp_enqueue_style( 'acf_required_tabs', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'assets/dist/main.css', [], $version, 'all' );
-        }
+        // Filter dependencies in case you for example provide jQuery separately from the WordPress system
+        $dependencies = apply_filters( 'acf/required_tabs/dependencies', [ 'jquery' ] );
+
+        wp_enqueue_style( 'acf_required_tabs', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'assets/dist/main.css', [], $version, 'all' );
+        wp_enqueue_script( 'acf_required_tabs', trailingslashit( plugin_dir_url( __FILE__ ) ) . 'assets/dist/main.js', $dependencies, $version, false );
     }
 }
 

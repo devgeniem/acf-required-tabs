@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2018-02-01
+
+### Fixed
+- Fixed to call enqueue scripts in the `admin_enqueue_scripts` hook. Caused previously an exception.
+- Added a cleaner way to get plugin version.
+
 ## [1.0.2] - 2018-01-25
 
 ### Fixed
