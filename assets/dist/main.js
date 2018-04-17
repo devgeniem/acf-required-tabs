@@ -83,6 +83,9 @@
 	    (0, _createClass3.default)(RequiredTabs, [{
 	        key: 'checkFields',
 	        value: function checkFields() {
+	            var _this = this;
+
+	            this.debug('checking fields');
 
 	            // Instantiate the indicator element.
 	            var indicator = '<span class="acf-required-indicator">*</span>';
@@ -92,23 +95,28 @@
 
 	            // Loob through all ACF tab fields
 	            $('.acf-field-tab').each(function (index, element) {
-	                var name = $(element).data('name');
-	                var $button = $('a.acf-tab-button[data-key="' + name + '"]');
+	                _this.debug('found a tab');
+
+	                var key = $(element).data('key');
+	                var $button = $('a.acf-tab-button[data-key="' + key + '"]');
 	                var hasError = false;
 
 	                // Find all fields in tab
-	                $(element).nextUntil('div.acf-field[data-key="' + name + '"]').each(function (index, element) {
+	                $(element).nextUntil('div.acf-field[data-key="' + key + '"]').each(function (index, element) {
+	                    _this.debug('found a field inside a tab');
 
 	                    // Count possible validation errors in the tab.
 	                    var errors = $(element).find('div.acf-error-message');
 
 	                    if (errors.length > 0) {
+	                        _this.debug('yes, there are errors');
 	                        hasError = true;
 	                    }
 	                });
 
 	                // If there are errors, show the indicator.
 	                if (hasError) {
+	                    _this.debug('had an error, appending to', $button);
 	                    $button.append($(indicator));
 	                }
 	            });
@@ -210,50 +218,80 @@
 	        }
 
 	        /**
+	         * Console.log debugs if we need them to show
+	         * 
+	         * @param {*} items 
+	         */
+
+	    }, {
+	        key: 'debug',
+	        value: function debug() {
+	            if (this.debugOn) {
+	                var _console;
+
+	                (_console = console).log.apply(_console, arguments);
+	            }
+	        }
+
+	        /**
 	         * Code that runs in document ready.
 	         */
 
 	    }, {
 	        key: 'docReady',
 	        value: function docReady() {
-	            var _this = this;
+	            var _this2 = this;
+
+	            this.debug('rt docReady');
+
+	            this.tabs = $('.acf-field-tab');
+
+	            if (this.tabs.length === 0) {
+	                this.debug('no tabs found, bailing');
+	                return;
+	            }
 
 	            // Hook into ACF validation failure action.
 	            acf.add_action('validation_failure', function () {
+	                _this2.debug('validation failure');
 
 	                // Check if we have triggered the validation manually.
 	                if (window.checkFieldsTriggered) {
+	                    _this2.debug('triggered manually');
+
 	                    window.checkFieldsTriggered = false;
 
 	                    // Hide the error messages for now.
-	                    _this.changeCSS('acf-global.css', '.acf-error-message', 'display', 'none');
-	                    _this.changeCSS('acf-input.css', '.acf-field .acf-error-message', 'display', 'none');
+	                    _this2.changeCSS('acf-global.css', '.acf-error-message', 'display', 'none');
+	                    _this2.changeCSS('acf-input.css', '.acf-field .acf-error-message', 'display', 'none');
 
 	                    // Wait a second for the error messages to be created.
 	                    setTimeout(function () {
+	                        _this2.debug('waited a second');
 
-	                        _this.checkFields();
+	                        _this2.checkFields();
 
 	                        // Remove all error messages
 	                        $('div.acf-error-message').remove();
 
 	                        // After the error messages have been removed, we can add the CSS rules back.
 	                        setTimeout(function () {
-	                            _this.changeCSS('acf-global.css', '.acf-error-message', 'display', 'block');
-	                            _this.changeCSS('acf-input.css', '.acf-field .acf-error-message', 'display', 'inline-block');
+	                            _this2.changeCSS('acf-global.css', '.acf-error-message', 'display', 'block');
+	                            _this2.changeCSS('acf-input.css', '.acf-field .acf-error-message', 'display', 'inline-block');
 	                        }, 1000);
 	                    }, 1000);
 	                } else {
 
 	                    // Run the checkFields function even if we haven't triggered the validation ourselves.
 	                    setTimeout(function () {
-	                        _this.checkFields();
+	                        _this2.checkFields();
 	                    }, 1000);
 	                }
 	            });
 
 	            // Hook into ACF validation success action.
 	            acf.add_action('validation_success', function () {
+	                _this2.debug('validation success');
 
 	                // Check if we have triggered the validation manually.
 	                if (window.checkFieldsTriggered) {
@@ -275,6 +313,8 @@
 	jQuery(document).ready(function ($) {
 	    if (typeof acf !== 'undefined') {
 	        var rt = new RequiredTabs();
+
+	        rt.debugOn = false;
 
 	        rt.docReady();
 	    }

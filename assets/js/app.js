@@ -14,6 +14,7 @@ class RequiredTabs {
      * Checks for error messages within the tabs and adds the indicator to the button if needed.
      */
     checkFields() {
+        this.debug( 'checking fields' );
 
         // Instantiate the indicator element.
         const indicator = '<span class="acf-required-indicator">*</span>';
@@ -23,23 +24,28 @@ class RequiredTabs {
 
         // Loob through all ACF tab fields
         $( '.acf-field-tab' ).each( ( index, element ) => {
-            const name = $( element ).data( 'name' );
-            const $button = $( 'a.acf-tab-button[data-key="' + name + '"]' );
+            this.debug( 'found a tab' );
+
+            const key = $( element ).data( 'key' );
+            const $button = $( 'a.acf-tab-button[data-key="' + key + '"]' );
             let hasError = false;
 
             // Find all fields in tab
-            $( element ).nextUntil( 'div.acf-field[data-key="' + name + '"]' ).each( ( index, element ) => {
+            $( element ).nextUntil( 'div.acf-field[data-key="' + key + '"]' ).each( ( index, element ) => {
+                this.debug( 'found a field inside a tab' );
 
                 // Count possible validation errors in the tab.
                 let errors = $( element ).find( 'div.acf-error-message' );
 
                 if ( errors.length > 0 ) {
+                    this.debug( 'yes, there are errors' );
                     hasError = true;
                 }
             });
 
             // If there are errors, show the indicator.
             if ( hasError ) {
+                this.debug( 'had an error, appending to', $button );
                 $button.append( $( indicator ) );
             }
         });
@@ -93,15 +99,37 @@ class RequiredTabs {
     }
 
     /**
+     * Console.log debugs if we need them to show
+     * 
+     * @param {*} items 
+     */
+    debug( ...items ) {
+        if ( this.debugOn ) {
+            console.log( ...items );
+        }
+    }
+
+    /**
      * Code that runs in document ready.
      */
     docReady() {
+        this.debug( 'rt docReady' );
+
+        this.tabs = $( '.acf-field-tab' );
+
+        if ( this.tabs.length === 0 ) {
+            this.debug( 'no tabs found, bailing' );
+            return;
+        }
 
         // Hook into ACF validation failure action.
         acf.add_action( 'validation_failure', () => {
+            this.debug( 'validation failure' );
 
             // Check if we have triggered the validation manually.
             if ( window.checkFieldsTriggered ) {
+                this.debug( 'triggered manually' );
+
                 window.checkFieldsTriggered = false;
 
                 // Hide the error messages for now.
@@ -110,6 +138,7 @@ class RequiredTabs {
 
                 // Wait a second for the error messages to be created.
                 setTimeout( () => {
+                    this.debug( 'waited a second' );
 
                     this.checkFields();
 
@@ -133,6 +162,7 @@ class RequiredTabs {
 
         // Hook into ACF validation success action.
         acf.add_action( 'validation_success', () => {
+            this.debug( 'validation success' );
 
             // Check if we have triggered the validation manually.
             if ( window.checkFieldsTriggered ) {
@@ -152,6 +182,8 @@ class RequiredTabs {
 jQuery( document ).ready( function( $ ) {
     if ( typeof acf !== 'undefined' ) {
         const rt = new RequiredTabs();
+
+        rt.debugOn = false;
 
         rt.docReady();
     }
