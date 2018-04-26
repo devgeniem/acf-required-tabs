@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2018-04-26
+
+### Fixed
+- A bug that threw an error when there were no ACF tabs used on a page.
+
 ## [1.0.4] - 2018-04-17
 
 ### Fixed

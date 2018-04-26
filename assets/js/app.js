@@ -20,22 +20,22 @@ class RequiredTabs {
         const indicator = '<span class="acf-required-indicator">*</span>';
 
         // Remove all previous indicators.
-        $( 'span.acf-required-indicator' ).remove();
+        jQuery( 'span.acf-required-indicator' ).remove();
 
         // Loob through all ACF tab fields
-        $( '.acf-field-tab' ).each( ( index, element ) => {
+        jQuery( '.acf-field-tab' ).each( ( index, element ) => {
             this.debug( 'found a tab' );
 
-            const key = $( element ).data( 'key' );
-            const $button = $( 'a.acf-tab-button[data-key="' + key + '"]' );
+            const key = jQuery( element ).data( 'key' );
+            const $button = jQuery( 'a.acf-tab-button[data-key="' + key + '"]' );
             let hasError = false;
 
             // Find all fields in tab
-            $( element ).nextUntil( 'div.acf-field[data-key="' + key + '"]' ).each( ( index, element ) => {
+            jQuery( element ).nextUntil( 'div.acf-field[data-key="' + key + '"]' ).each( ( index, element ) => {
                 this.debug( 'found a field inside a tab' );
 
                 // Count possible validation errors in the tab.
-                let errors = $( element ).find( 'div.acf-error-message' );
+                let errors = jQuery( element ).find( 'div.acf-error-message' );
 
                 if ( errors.length > 0 ) {
                     this.debug( 'yes, there are errors' );
@@ -46,7 +46,7 @@ class RequiredTabs {
             // If there are errors, show the indicator.
             if ( hasError ) {
                 this.debug( 'had an error, appending to', $button );
-                $button.append( $( indicator ) );
+                $button.append( jQuery( indicator ) );
             }
         });
     }
@@ -115,7 +115,7 @@ class RequiredTabs {
     docReady() {
         this.debug( 'rt docReady' );
 
-        this.tabs = $( '.acf-field-tab' );
+        this.tabs = jQuery( '.acf-field-tab' );
 
         if ( this.tabs.length === 0 ) {
             this.debug( 'no tabs found, bailing' );
@@ -143,7 +143,7 @@ class RequiredTabs {
                     this.checkFields();
 
                     // Remove all error messages
-                    $( 'div.acf-error-message' ).remove();
+                    jQuery( 'div.acf-error-message' ).remove();
 
                     // After the error messages have been removed, we can add the CSS rules back.
                     setTimeout( () => {
