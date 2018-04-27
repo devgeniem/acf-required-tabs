@@ -24,7 +24,7 @@ OR add it in your `composer.json`:
 ```json
 {
   "require": {
-    "devgeniem/acf-required-tabs": "*"
+    "devgeniem/acf-required-tabs": "^1.0.0"
   }
 }
 ```
