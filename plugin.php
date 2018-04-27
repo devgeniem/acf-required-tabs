@@ -3,7 +3,7 @@
  * Plugin Name: ACF Required Tabs
  * Plugin URI: https://github.com/devgeniem/acf-required-tabs
  * Description: An Advanced Custom Fields plugin that adds an indicator for tabs that contain unfilled required fields.
- * Version: 1.0.6
+ * Version: 1.0.5
  * Author: Geniem Oy / Miika Arponen
  * Author URI: http://www.geniem.com
  */
